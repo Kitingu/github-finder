@@ -8,6 +8,7 @@ import Search from './components/users/Search';
 import Alert from './components/layout/Alert';
 import About from './components/pages/About';
 import User from './components/users/User';
+import Repos from './components/repos/Repos';
 
 class App extends Component {
 	state = {
@@ -15,6 +16,7 @@ class App extends Component {
 		user: {},
 		loading: false,
 		alert: null,
+		repos:[]
 	};
 
 	// search github users
@@ -46,6 +48,21 @@ class App extends Component {
 		});
 	};
 
+	// Get a single github user
+	getUserRepos = async (username) => {
+		this.setState({
+			loading: true,
+		});
+		const res = await axios.get(
+			`https://api.github.com/users/${username}/repos?per_page=5&sort=created:asc&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`
+		);
+
+		this.setState({
+			repos: res.data,
+			loading: false,
+		});
+	};
+
 	// clear searched users from state
 	clearUsers = () => {
 		this.setState({
@@ -58,13 +75,13 @@ class App extends Component {
 		this.setState({
 			alert: { message, type },
 		});
-		// clear alert after 5 seconds
+		// clear alert afterrepo.name 5 seconds
 		setTimeout(() => this.setState({ alert: null }), 5000);
 	};
 
 	// show clear is a prop for showing the clear button on the search page
 	render() {
-		const { users, user, loading } = this.state;
+		const { users, user,repos, loading } = this.state;
 
 		return (
 			<Router>
@@ -102,7 +119,9 @@ class App extends Component {
 									<User
 										{...props}
 										getUser={this.getUser}
+										getUserRepos={this.getUserRepos}
 										user={user}
+										repos={repos}
 										loading={loading}
 									/>
 								)}
