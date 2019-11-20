@@ -6,8 +6,6 @@ import GithubReducer from './githubReducer';
 import {
 	SEARCH_USERS,
 	SET_LOADING,
-	SET_ALERT,
-	REMOVE_ALERT,
 	GET_REPOS,
 	GET_USER,
 	CLEAR_USERS,
