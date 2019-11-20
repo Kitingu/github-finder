@@ -1,12 +1,13 @@
-import React, { useEffect, Fragment } from 'react';
+import React, { useEffect, useContext, Fragment } from 'react';
 import Spinner from '../layout/Spinner';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import Repos from '../repos/Repos';
+import GithubContext from '../../context/github/githubContext';
 
-const User = ({ user, getUser, getUserRepos, loading, repos, match }) => {
-	// use effect is similar to componentDidMount
-	// it takes a function and we need to pass in [] to prevent recurring call of useEffect unless theres an update
+const User = ({ getUserRepos, repos, match }) => {
+	const githubContext = useContext(GithubContext);
+	const { user, getUser, loading } = githubContext;
 
 	useEffect(() => {
 		getUser(match.params.login);
@@ -114,10 +115,7 @@ const User = ({ user, getUser, getUserRepos, loading, repos, match }) => {
 };
 
 User.propTypes = {
-	loading: PropTypes.bool,
-	user: PropTypes.object.isRequired,
 	repos: PropTypes.array.isRequired,
-	getUser: PropTypes.func.isRequired,
 	getUserRepos: PropTypes.func.isRequired,
 };
 
