@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import AlertContext from '../../context/alert/alertContext';
 
-// destructure alert from props which can either be null or an object
-// alternatively it should be (this.props.alert)
-const Alert = ({ alert }) => {
+const Alert = () => {
+	const alertContext = useContext(AlertContext);
+	const { alert } = alertContext;
 	return (
-        // render alert if alert is not null
+		// render alert if alert is not null
 		alert !== null && (
 			<div className={`alert alert-${alert.type}`}>
 				<i className='fas fa-info-circle'></i> {alert.message}
